@@ -220,7 +220,7 @@ export function createAuthCredentials(
     accessCode: accessCode.trim(),
     clientID: clientID.trim(),
     clientSecret: clientSecret.trim(),
-    mobileNo: "7018389510", // <--- Add this
-    githubUsername: "gouravsittam", // <--- Add this
+    mobileNo: "7018389510", 
+    githubUsername: "gouravsittam", 
   };
 }

@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import { logger } from "../utils/logger";
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "";
 
 const StatisticsPage: React.FC = () => {
   const [stats, setStats] = useState<any[]>([]);

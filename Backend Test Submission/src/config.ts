@@ -6,7 +6,7 @@ import { AppConfig, LoggerConfig, AuthCredentials } from "./types";
 
 // Application configuration
 export const appConfig: AppConfig = {
-  port: parseInt(process.env.PORT || "3000", 10),
+  port: parseInt(process.env.PORT || "3001", 10),
   host: process.env.HOST || "localhost",
   defaultValidity: 30, // 30 minutes as per requirements
   shortcodeLength: 6,

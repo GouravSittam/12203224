@@ -7,5 +7,10 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    proxy: {
+      "/shorturls": "http://localhost:3001",
+      "/log": "http://localhost:3001",
+      "/health": "http://localhost:3001",
+    },
   },
 });
