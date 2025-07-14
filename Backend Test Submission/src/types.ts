@@ -90,4 +90,6 @@ export interface AuthCredentials {
   accessCode: string;
   clientID: string;
   clientSecret: string;
+  mobileNo: string;
+  githubUsername: string;
 }

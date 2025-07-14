@@ -49,7 +49,7 @@ export class AuthService {
       console.log("Registering with test server...");
 
       const response = await this.axiosInstance.post<RegistrationResponse>(
-        "/register",
+        "/evaluation-service/register",
         registrationData
       );
 
@@ -71,7 +71,7 @@ export class AuthService {
       console.log("Authenticating with test server...");
 
       const response = await this.axiosInstance.post<AuthResponse>(
-        "/auth",
+        "/evaluation-service/auth",
         credentials
       );
 
@@ -220,5 +220,7 @@ export function createAuthCredentials(
     accessCode: accessCode.trim(),
     clientID: clientID.trim(),
     clientSecret: clientSecret.trim(),
+    mobileNo: "7018389510", // <--- Add this
+    githubUsername: "gouravsittam", // <--- Add this
   };
 }

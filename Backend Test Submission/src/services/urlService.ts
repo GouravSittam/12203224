@@ -13,7 +13,6 @@ import {
 import { appConfig } from "../config";
 import { generateShortcode, isValidShortcode } from "../utils/validation";
 import { getLocationFromIP } from "../utils/geoLocation";
-import { Log } from "logging-middleware";
 
 // In-memory storage (in production, this would be a database)
 const shortUrls = new Map<string, ShortUrl>();
@@ -32,12 +31,7 @@ export class UrlService {
     request: CreateShortUrlRequest
   ): Promise<CreateShortUrlResponse> {
     try {
-      await Log(
-        "backend",
-        "info",
-        "service",
-        `Creating short URL for: ${request.url}`
-      );
+      console.info("service", `Creating short URL for: ${request.url}`);
 
       // Generate or validate shortcode
       let shortcode: string;
@@ -48,33 +42,18 @@ export class UrlService {
 
         // Check if shortcode already exists
         if (shortUrls.has(shortcode)) {
-          await Log(
-            "backend",
-            "error",
-            "service",
-            `Shortcode already exists: ${shortcode}`
-          );
+          console.error("service", `Shortcode already exists: ${shortcode}`);
           throw new Error("Shortcode already exists");
         }
 
-        await Log(
-          "backend",
-          "info",
-          "service",
-          `Using custom shortcode: ${shortcode}`
-        );
+        console.info("service", `Using custom shortcode: ${shortcode}`);
       } else {
         // Generate unique shortcode
         do {
           shortcode = generateShortcode();
         } while (shortUrls.has(shortcode));
 
-        await Log(
-          "backend",
-          "info",
-          "service",
-          `Generated shortcode: ${shortcode}`
-        );
+        console.info("service", `Generated shortcode: ${shortcode}`);
       }
 
       // Calculate expiry date
@@ -95,23 +74,18 @@ export class UrlService {
       shortUrls.set(shortcode, shortUrl);
       clicks.set(shortcode, []);
 
-      await Log(
-        "backend",
-        "info",
-        "service",
-        `Short URL created successfully: ${shortcode}`
-      );
+      console.info("service", `Short URL created successfully: ${shortcode}`);
 
       return {
         shortLink: `http://${appConfig.host}:${appConfig.port}/${shortcode}`,
         expiry: expiryDate.toISOString(),
       };
     } catch (error) {
-      await Log(
-        "backend",
-        "error",
+      console.error(
         "service",
-        `Failed to create short URL: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to create short URL: ${
+          error instanceof Error ? error.message : String(error)
+        }`
       );
       throw error;
     }
@@ -124,9 +98,7 @@ export class UrlService {
    */
   async getOriginalUrl(shortcode: string): Promise<string | null> {
     try {
-      await Log(
-        "backend",
-        "info",
+      console.info(
         "service",
         `Looking up original URL for shortcode: ${shortcode}`
       );
@@ -134,40 +106,25 @@ export class UrlService {
       const shortUrl = shortUrls.get(shortcode);
 
       if (!shortUrl) {
-        await Log(
-          "backend",
-          "warn",
-          "service",
-          `Shortcode not found: ${shortcode}`
-        );
+        console.warn("service", `Shortcode not found: ${shortcode}`);
         return null;
       }
 
       // Check if URL has expired
       if (new Date() > shortUrl.expiryDate) {
-        await Log(
-          "backend",
-          "warn",
-          "service",
-          `Short URL expired: ${shortcode}`
-        );
+        console.warn("service", `Short URL expired: ${shortcode}`);
         shortUrl.isActive = false;
         return null;
       }
 
-      await Log(
-        "backend",
-        "info",
-        "service",
-        `Original URL found for shortcode: ${shortcode}`
-      );
+      console.info("service", `Original URL found for shortcode: ${shortcode}`);
       return shortUrl.originalUrl;
     } catch (error) {
-      await Log(
-        "backend",
-        "error",
+      console.error(
         "service",
-        `Failed to get original URL: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to get original URL: ${
+          error instanceof Error ? error.message : String(error)
+        }`
       );
       throw error;
     }
@@ -188,18 +145,11 @@ export class UrlService {
     }
   ): Promise<void> {
     try {
-      await Log(
-        "backend",
-        "info",
-        "service",
-        `Recording click for shortcode: ${shortcode}`
-      );
+      console.info("service", `Recording click for shortcode: ${shortcode}`);
 
       const shortUrl = shortUrls.get(shortcode);
       if (!shortUrl) {
-        await Log(
-          "backend",
-          "warn",
+        console.warn(
           "service",
           `Cannot record click - shortcode not found: ${shortcode}`
         );
@@ -225,18 +175,16 @@ export class UrlService {
       shortcodeClicks.push(click);
       clicks.set(shortcode, shortcodeClicks);
 
-      await Log(
-        "backend",
-        "info",
+      console.info(
         "service",
         `Click recorded successfully for shortcode: ${shortcode}`
       );
     } catch (error) {
-      await Log(
-        "backend",
-        "error",
+      console.error(
         "service",
-        `Failed to record click: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to record click: ${
+          error instanceof Error ? error.message : String(error)
+        }`
       );
       // Don't throw error for click recording failures
     }
@@ -249,18 +197,11 @@ export class UrlService {
    */
   async getStatistics(shortcode: string): Promise<ShortUrlStatistics | null> {
     try {
-      await Log(
-        "backend",
-        "info",
-        "service",
-        `Getting statistics for shortcode: ${shortcode}`
-      );
+      console.info("service", `Getting statistics for shortcode: ${shortcode}`);
 
       const shortUrl = shortUrls.get(shortcode);
       if (!shortUrl) {
-        await Log(
-          "backend",
-          "warn",
+        console.warn(
           "service",
           `Statistics requested for non-existent shortcode: ${shortcode}`
         );
@@ -287,19 +228,17 @@ export class UrlService {
         clicks: clickData,
       };
 
-      await Log(
-        "backend",
-        "info",
+      console.info(
         "service",
         `Statistics retrieved for shortcode: ${shortcode}, total clicks: ${shortcodeClicks.length}`
       );
       return statistics;
     } catch (error) {
-      await Log(
-        "backend",
-        "error",
+      console.error(
         "service",
-        `Failed to get statistics: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to get statistics: ${
+          error instanceof Error ? error.message : String(error)
+        }`
       );
       throw error;
     }
@@ -330,19 +269,14 @@ export class UrlService {
       }
 
       if (cleanedCount > 0) {
-        await Log(
-          "backend",
-          "info",
-          "service",
-          `Cleaned up ${cleanedCount} expired URLs`
-        );
+        console.info("service", `Cleaned up ${cleanedCount} expired URLs`);
       }
     } catch (error) {
-      await Log(
-        "backend",
-        "error",
+      console.error(
         "service",
-        `Failed to cleanup expired URLs: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to cleanup expired URLs: ${
+          error instanceof Error ? error.message : String(error)
+        }`
       );
     }
   }

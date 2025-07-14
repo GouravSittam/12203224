@@ -4,38 +4,34 @@
  */
 
 // Valid stack values
-export type Stack = 'backend' | 'frontend';
+export type Stack = "backend" | "frontend";
 
 // Valid level values
-export type Level = 'debug' | 'info' | 'warn' | 'error' | 'fatal';
+export type Level = "debug" | "info" | "warn" | "error" | "fatal";
 
 // Valid package values for Backend applications
-export type BackendPackage = 
-  | 'cache'
-  | 'controller'
-  | 'cron_job'
-  | 'db'
-  | 'domain'
-  | 'handler'
-  | 'repository'
-  | 'route'
-  | 'service';
+export type BackendPackage =
+  | "cache"
+  | "controller"
+  | "cron_job"
+  | "db"
+  | "domain"
+  | "handler"
+  | "repository"
+  | "route"
+  | "service";
 
 // Valid package values for Frontend applications
-export type FrontendPackage = 
-  | 'api'
-  | 'component'
-  | 'hook'
-  | 'page'
-  | 'state'
-  | 'style';
+export type FrontendPackage =
+  | "api"
+  | "component"
+  | "hook"
+  | "page"
+  | "state"
+  | "style";
 
 // Valid package values for both Backend and Frontend applications
-export type SharedPackage = 
-  | 'auth'
-  | 'config'
-  | 'middleware'
-  | 'utils';
+export type SharedPackage = "auth" | "config" | "middleware" | "utils";
 
 // Union type for all valid packages
 export type Package = BackendPackage | FrontendPackage | SharedPackage;
@@ -62,6 +58,8 @@ export interface AuthCredentials {
   accessCode: string;
   clientID: string;
   clientSecret: string;
+  mobileNo: string; // Added for registration
+  githubUsername: string; // Added for registration
 }
 
 // Authentication response interface
@@ -103,4 +101,4 @@ export interface LoggerConfig {
 export interface ValidationResult {
   isValid: boolean;
   errors: string[];
-} 
+}

@@ -3,7 +3,6 @@
  */
 
 import { Request, Response, NextFunction } from "express";
-import { Log } from "logging-middleware";
 
 /**
  * Global error handler middleware
@@ -15,15 +14,7 @@ export function errorHandler(
   next: NextFunction
 ): void {
   // Log the error
-  Log(
-    "backend",
-    "error",
-    "middleware",
-    `Unhandled error: ${error.message}`
-  ).catch(() => {
-    // Fallback to console if logging fails
-    console.error("Failed to log error:", error.message);
-  });
+  console.error("Unhandled error:", error.message);
 
   // Don't expose internal errors in production
   const message =
@@ -42,14 +33,7 @@ export function errorHandler(
  * 404 handler middleware
  */
 export function notFoundHandler(req: Request, res: Response): void {
-  Log(
-    "backend",
-    "warn",
-    "middleware",
-    `Route not found: ${req.method} ${req.path}`
-  ).catch(() => {
-    console.warn(`Route not found: ${req.method} ${req.path}`);
-  });
+  console.warn(`Route not found: ${req.method} ${req.path}`);
 
   res.status(404).json({
     error: "Not Found",
@@ -69,30 +53,16 @@ export function requestLogger(
   const start = Date.now();
 
   // Log request start
-  Log(
-    "backend",
-    "info",
-    "middleware",
-    `${req.method} ${req.path} - Request started`
-  ).catch(() => {
-    console.log(`${req.method} ${req.path} - Request started`);
-  });
+  console.log(`${req.method} ${req.path} - Request started`);
 
   // Override res.end to log response
   const originalEnd = res.end;
   res.end = function (this: Response, chunk?: any, encoding?: any): any {
     const duration = Date.now() - start;
 
-    Log(
-      "backend",
-      "info",
-      "middleware",
+    console.log(
       `${req.method} ${req.path} - ${res.statusCode} - ${duration}ms`
-    ).catch(() => {
-      console.log(
-        `${req.method} ${req.path} - ${res.statusCode} - ${duration}ms`
-      );
-    });
+    );
 
     return originalEnd.call(this, chunk, encoding);
   } as typeof res.end;

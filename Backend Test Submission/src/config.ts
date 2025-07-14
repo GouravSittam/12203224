@@ -24,12 +24,14 @@ export const loggerConfig: LoggerConfig = {
 
 // Authentication credentials (to be replaced with actual values)
 export const authCredentials: AuthCredentials = {
-  email: "gouravsittam@gmail.com",
-  name: "Gourav",
+  email: "gourav@lpu.in",
+  name: "gourav",
   rollNo: "12203224",
   accessCode: "CZypQK",
-  clientID: "d9cbb699-6a27-44a5-8d59-8b1befa816da",
-  clientSecret: "tVJaaaRBSeXcRXeM",
+  clientID: "c5cd716f-2273-456f-b144-42036577b35b",
+  clientSecret: "nPVsgzumsVSvsykP",
+  mobileNo: "7018389510",
+  githubUsername: "gouravsittam",
 };
 
 // Environment variables

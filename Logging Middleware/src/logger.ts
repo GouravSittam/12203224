@@ -53,6 +53,8 @@ export class Logger {
     accessCode: string;
     clientID: string;
     clientSecret: string;
+    mobileNo: string;
+    githubUsername: string;
   }): Promise<void> {
     try {
       await this.authService.authenticate(credentials);
@@ -232,6 +234,8 @@ export async function initializeLogger(
     accessCode: string;
     clientID: string;
     clientSecret: string;
+    mobileNo: string;
+    githubUsername: string;
   }
 ): Promise<void> {
   globalLogger = new Logger(config);
