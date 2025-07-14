@@ -1,0 +1,43 @@
+Develop a React URL Shortener Web App
+Develop a responsive React frontend web application that integrates with the
+backend microservice to provide a user interface for URL shortening and analytics.
+• Mandatory Logging Integration: Your app MUST extensively use the Logging
+Middleware you created in the Pre-Test Setup stage. Use of inbuilt language
+loggers or console logging is not allowed.
+• Running Environment: Your React application must run exclusively on
+http://localhost:3000.
+• Integration: Your React application must be integrated with the backend APIs
+developed as part of this evaluation. The React application must not implement
+the URL shortening logic or the statistics aggregation itself; it should solely
+consume the backend APIs for these functionalities.
+
+• User Experience: Care must be taken to avoid cluttering the page. The IJI must
+prioritize user experience, with a focus on highlighting key elements of each
+page.
+• Styling Framework: Use Material Ul only. If you are not familiar with Material
+IJI, employ native CSS. Use of ShadCN or other CSS Libraries is prohibited. Solely
+relying on native CSS or not using Material Ul will result in lower scores.
+Your application should consist of the following pages
+URL Shortener Page
+• Functionality: This page should allow users to shorten up to 5 URLs
+concurrently. For each URL, the user should be able to provide:
+o The original long URL
+o An optional validity period (in minutes).
+o An optional preferred shortcode.
+• Client-Side Validation: Prior to making API calls to the backend, the user's
+inputs should be validated client-side based on the constraints already
+specified in the "General Requirements & Constraints" section (e.g., valid URL
+format, validity as an integer).
+• Display Results: Upon successful creation of shortened URLs, the
+application must display the shortened links along with their respective
+expiry dates, clearly associated with each original URL provided by the user.
+URL Shortener Statistics Page
+Functionality: This page should display a list of all shortened URLs created (either
+in the current session or historically if data persistence is implemented and
+accessible). For each listed shortened URL, it should clearly present:
+• The shortened URL itself and its creation and expiry date times
+• The total number of times the short link has been clicked.
+• Detailed click data, including:
+o The timestamp of each click.
+o The source from which the click originated
+The coarse-grained geographical location of the click.
